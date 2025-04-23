@@ -4,20 +4,20 @@ import dash
 from dash import dcc, html
 import plotly.express as px
 
-# === Step 1: Load the formatted sales data ===
+# Step 1: Load the formatted sales data
 df = pd.read_csv("formatted_sales_data.csv")
 
 # Ensure 'date' column is datetime
 df["date"] = pd.to_datetime(df["date"])
 
-# === Step 2: Aggregate sales by date ===
+# Step 2: Aggregate sales by date
 daily_sales = df.groupby("date", as_index=False)["sales"].sum()
 
-# === Step 3: Initialize Dash app ===
+# Step 3: Initialize Dash app
 app = dash.Dash(__name__)
 app.title = "Pink Morsel Sales Visualiser"
 
-# === Step 4: Create the line chart ===
+# Step 4: Create the line chart
 fig = px.line(
     daily_sales,
     x="date",
@@ -26,7 +26,7 @@ fig = px.line(
     labels={"date": "Date", "sales": "Sales ($)"}
 )
 
-# === Step 5: Add vertical line and annotation for price increase ===
+# Step 5: Add vertical line and annotation for price increase
 price_increase_date = datetime.datetime(2021, 1, 15)
 max_sales = daily_sales["sales"].max()
 
@@ -48,7 +48,7 @@ fig.add_annotation(
     font=dict(color="red")
 )
 
-# === Step 6: Build layout ===
+# Step 6: Build layout
 app.layout = html.Div(children=[
     html.H1("Pink Morsel Sales Dashboard", style={'textAlign': 'center'}),
     dcc.Graph(
@@ -57,6 +57,6 @@ app.layout = html.Div(children=[
     )
 ])
 
-# === Step 7: Run the app ===
+# Step 7: Run the app
 if __name__ == '__main__':
     app.run(debug=True)
